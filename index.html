@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Shower Presentation Engine</title>
+	<meta charset="utf-8">
+	<meta http-equiv="x-ua-compatible" content="ie=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="shower/themes/ribbon/styles/screen-16x10.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/styles/solarized-light.min.css">
+</head>
+<body class="shower list">
+	<header class="caption">
+		<h1>SW</h1>
+		<p>Andrey Makarov aka r3nya</p>
+	</header>
+
+	<section class="slide" id="cover">
+		<h2>SW</h2>
+		<p>by <a href="http://r3nya.ru">Andrey Makarov</a></p>
+		<img src="pictures/cache.jpg" alt="" class="cover">
+		<!--
+			To apply styles to the certain slides
+			set slide ID to get needed elements
+			-->
+		<style>
+			#cover img {
+				max-width: none;
+			}
+			#cover h2 {
+				margin:30px 0 0;
+				color:#FFF;
+				text-align:center;
+				font-size:70px;
+				text-shadow: 1px 1px 2px black;
+			}
+			#cover p {
+				margin:10px 0 0;
+				text-align:center;
+				color:#FFF;
+				font-style:italic;
+				font-size:20px;
+				text-shadow: 1px 1px 2px black;
+			}
+			#cover p a {
+				color:#FFF;
+			}
+		</style>
+	</section>
+
+	<section class="slide" id="offline">
+		<img src="pictures/offline.png" alt="" class="cover">
+	</section>
+
+	<section class="slide" id="meme">
+		<img src="pictures/meme.jpg" alt="" class="cover">
+	</section>
+
+	<section class="slide">
+		<h2 class="shout shrink">Offline first</h2>
+	</section>
+
+	<section class="slide">
+		<h2>Ok! Let's go … 🤔</h2>
+
+		<ol style="font-size: 3rem;">
+			<li>AppCache (<a href="https://www.html5rocks.com/en/tutorials/appcache/beginner/">guide</a>, <a href="https://html.spec.whatwg.org/multipage/offline.html#appcache">spec</a>)</li>
+			<li>Service Workers …</li>
+		</ol>
+	</section>
+
+	<section class="slide">
+		<h2>sitename.appcache</h2>
+		<pre>
+			<code>CACHE MANIFEST</code>
+			<code><span class="comment"># v1 2017-30-01</span></code>
+			<code>CACHE:</code>
+			<code>index.html</code>
+			<code>css/style.css</code>
+			<code>js/app.js</code>
+			<code>FALLBACK:</code>
+			<code>/ /offline.html</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>AppCache</h2>
+		<p class="ciu_embed" data-feature="offline-apps" data-periods="future_1,current,past_1,past_2">
+  			<a href="http://caniuse.com/#feat=offline-apps">Can I Use offline-apps?</a> Data on support for the offline-apps feature across the major browsers from caniuse.com.
+		</p>
+	</section>
+
+	<section class="slide">
+		<h2>:(</h2>
+		<p style="font-size: 3rem;">
+			<a href="https://alistapart.com/article/application-cache-is-a-douchebag">
+				Application Cache is a Douchebag
+			</a>
+		</p>
+	</section>
+
+	<section class="slide">
+		<h2 class="shout shrink">Service Worker? WTF?</h2>
+	</section>
+
+	<section class="slide">
+		<ul>
+			<li>Программируемый сетевой прокси, что позволяет контролировать обработку сетевых запросов со страницы</li>
+			<li>Не может получить доступ к DOM напрямую</li>
+			<li>Может обмениваться данными со страницами, которые он контролирует, реагируя на сообщения, отправленные через интерфейс <b>postMessage</b>, и эти страницы могут манипулировать DOM</li>
+			<li>Прерывается, если не используется, и перезапускается при необходимости</li>
+			<li>Service Worker’ы имеют доступ к API IndexedDB</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Service Workers</h2>
+		<p class="ciu_embed" data-feature="serviceworkers" data-periods="future_1,current,past_1,past_2">
+			<a href="http://caniuse.com/#feat=serviceworkers">Can I Use serviceworkers?</a> Data on support for the serviceworkers feature across the major browsers from caniuse.com.
+		</p>
+	</section>
+
+	<section class="slide">
+		<img src="pictures/lifecycle.png" alt="" class="cover">
+	</section>
+
+	<section class="slide">
+		<pre>
+			<code class="js">if ('serviceWorker' in navigator) {</code>
+			<code class="js">  window.addEventListener('load', () => {</code>
+			<code class="js">    navigator.serviceWorker.register<mark>('/sw.js')</mark></code>
+			<code class="js">      .then((registration) => {</code>
+			<code class="js"><span class="comment">      // Регистрация успешна</span></code>
+			<code class="js">      console.log('Tada!', registration.scope);</code>
+			<code class="js">    }).catch((err) => console.log('Fail: ', err));</code>
+			<code class="js">  });</code>
+			<code class="js">}</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Установка Service Worker’а</h2>
+		<pre>
+			<code class="js">self.addEventListener('install', (event) => {</code>
+			<code class="js"><span class="comment">  // установка</span></code>
+			<code class="js"><span class="comment">  // …</span></code>
+			<code class="js">});</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<pre style="font-size: 1.4rem;">
+			<code class="js">const CACHE_NAME = 'my-site-cache-v1';</code>
+			<code class="js">const urlsToCache = [</code>
+			<code class="js">  '/', '/script/main.js', '/styles/main.css',</code>
+			<code class="js">];</code>
+			<code class="js"> </code>
+			<code class="js">self.addEventListener('install', (event) => {</code>
+			<code class="js">  event.waitUntil(</code>
+			<code class="js">    caches.open(CACHE_NAME).then((cache) => {</code>
+			<code class="js">      return cache.addAll(urlsToCache);</code>
+			<code class="js">    })</code>
+			<code class="js">  });</code>
+			<code class="js">});</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Кеш и обработка запросов</h2>
+		<pre>
+			<code class="js">self.addEventListener('fetch', (event) => {</code>
+			<code class="js">  console.log(event.request);</code>
+			<code class="js">});</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<pre>
+			<code class="js">self.addEventListener('fetch', (event) => {</code>
+			<code class="js">  console.log(event.request);</code>
+			<code class="js">  console.log(event.request.url);</code>
+			<code class="js">  console.log(event.request.method);</code>
+			<code class="js">  console.log(event.request.headers);</code>
+			<code class="js">});</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<pre style="font-size: 1.4rem;">
+			<code class="js">self.addEventListener('fetch', (event) => {</code>
+			<code class="js">  event.respondWith(</code>
+			<code class="js">    caches.match(event.request)</code>
+			<code class="js">      .then((response) => {</code>
+			<code class="js"><span class="comment">        // ресурс есть в кеше</span></code>
+			<code class="js">        if (response) return response;</code>
+			<code class="js">  </code>
+			<code class="js">        return fetch(event.request);</code>
+			<code class="js">     })</code>
+			<code class="js">  );</code>
+			<code class="js">});</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<pre style="font-size: 1.2rem;">
+			<code class="js">const fetchRequest = event.request.clone();</code>
+			<code class="js">return fetch(fetchRequest).then((response) => {</code>
+			<code class="js">  if (!response || response.status !== 200 || response.type !== 'basic') {</code>
+			<code class="js">    return response;</code>
+			<code class="js">  }</code>
+			<code> </code>
+			<code class="js">  const responseToCache = response.clone();</code>
+			<code class="js">  caches.open(CACHE_NAME).then((cache) => {</code>
+			<code class="js">    cache.put(event.request, responseToCache);</code>
+			<code class="js">  });</code>
+			<code> </code>
+			<code class="js">  return response;</code>
+			<code class="js">});</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Обновление Service Worker’а</h2>
+		<ol>
+			<li>Юзер заходит на сайт → браузер скачивает файл Service Worker’а (SW).</li>
+			<li>Если SW новый, срабатывает событие <mark>install</mark>.</li>
+			<li>На этом этапе старый SW по прежнему контролирует страницу, тогда как новый переходит в состояние <mark>waiting</mark>.</li>
+			<li>Юзер закрывает текущие открытые страницы → старый SW будет убит, а новый получит контроль.</li>
+			<li>Когда новый SW получит контроль над страницей, сработает событие <mark>activate</mark>.</li>
+		</ol>
+	</section>
+
+	<section class="slide">
+		<pre style="font-size: 1.2rem;">
+			<code class="js">self.addEventListener('activate', (event) => {</code>
+			<code class="js">  const cacheWhitelist = ['pages-cache-v1', 'blog-posts-cache-v1'];</code>
+			<code class="js"> </code>
+			<code class="js">  event.waitUntil(</code>
+			<code class="js">    return Promise.all(</code>
+			<code class="js">      caches.keys().then((cacheNames) => {</code>
+			<code class="js">        cacheNames.map((cacheName) => {</code>
+			<code class="js">          if (!cacheWhitelist.includes(cacheName)) {</code>
+			<code class="js">            return caches.delete(cacheName);</code>
+			<code class="js">          }</code>
+			<code class="js">        })</code>
+			<code class="js">      );</code>
+			<code class="js">  })</code>
+			<code class="js">);</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Service Worker Precache</h2>
+		<ul>
+			<li><a href="https://github.com/GoogleChrome/sw-precache">sw-precache</a> (Gulp, Grunt, NPM scripts)</li>
+			<li><a href="https://github.com/goldhand/sw-precache-webpack-plugin">sw-precache-webpack-plugin</a> (Webpack)</li>
+			<li><a href="https://github.com/NekR/offline-plugin">offline-plugin</a> – It uses ServiceWorker, and AppCache as a fallback (Webpack)</li>
+		</ul>
+	</section>
+
+	<section class="slide">
+		<h2>Service Worker Toolbox (<a href="https://googlechrome.github.io/sw-toolbox/">sw-toolbox</a>)</h2>
+		<pre>
+			<code class="js">toolbox.router.get('/api', toolbox.networkFirst);</code>
+			<code class="js">toolbox.router.get('/avatars', toolbox.cacheFirst);</code>
+			<code class="js">toolbox.router.get('/posts', toolbox.fasters);</code>
+		</pre>
+	</section>
+
+	<section class="slide">
+		<h2>Docs</h2>
+		<ul>
+			<li><a href="https://jakearchibald.com/2014/offline-cookbook/">Jake Archibald’s offline cookbook</a></li>
+			<li><a href="https://www.udacity.com/course/offline-web-applications--ud899">Course on Offline Web Apps with Service Worker over on Udacity</a></li>
+			<li><a href="https://michalzalecki.com/progressive-web-apps-with-webpack/">Progressive Web Apps with Webpack</a></li>
+		</ul>
+	</section>
+
+	<section class="slide" id="picture">
+		<h2>???</h2>
+		<img src="pictures/wat.png" alt="WAT?!1" class="cover" id="wat">
+		<style>
+			#picture h2 {
+				color:#FFF;
+			}
+
+			#wat {
+				max-width: none;
+			}
+		</style>
+	</section>
+
+	<section class="slide" id="bb">
+		<h2 class="shout">
+			<a href="http://r3nya.ru">@r3nya</a>
+		</h2>
+		<style>
+			#bb h2 {
+				font-size:100px
+			}
+		</style>
+	</section>
+
+	<a href="https://github.com/r3nya/sw-intro" class="github-corner">
+		<svg width="80" height="80" viewBox="0 0 250 250" style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;">
+			<path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+			<path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+			<path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path>
+		</svg>
+	</a>
+
+	<style>
+		.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}
+	</style>
+
+	<div class="progress"></div>
+	<script src="shower/shower.min.js"></script>
+	<script src="//cdn.jsdelivr.net/caniuse-embed/1.1.0/caniuse-embed.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.3.0/highlight.min.js"></script>
+	<script>hljs.initHighlightingOnLoad();</script>
+</body>
+</html>
